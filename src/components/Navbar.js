@@ -17,6 +17,7 @@ export const PrivateNavbar = () => (
       <Link to='/questions'>Questions</Link>
       <Link to='/new'>Create New Question</Link>
       <Link to='/list'>Show My Questions</Link>
+      <Link to='/profile'>My Profile</Link>
     </section>
   </nav>
 );

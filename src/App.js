@@ -18,6 +18,9 @@ import AnswerFormPage from './pages/AnswerFormPage';
 import OwnerQuestionsPage from './pages/OwnerQuestionsPage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Footer } from './components/Footer';
+import MyProfile from './pages/MyProfile';
+import { connect } from 'react-redux';
+import { login, logout } from './actions/authActions';
 
 firebase.initializeApp({
   apiKey: 'AIzaSyA_DPUHPTfxSPV5SUtiLTFecDl0hTbx7ew',
@@ -31,11 +34,12 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 
-const App = () => {
+const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
-  if (user?.uid) {
-    localStorage.setItem('uid', user?.uid);
+  if(user){
+    dispatch(login(user.email, user.uid, user.displayName));
   }
+
   return (
     <Router>
       {user ? (
@@ -48,7 +52,7 @@ const App = () => {
               component={() => {
                 return (
                   <HomePage>
-                    <SignOut />
+                    <SignOut dispatch={dispatch} />
                   </HomePage>
                 );
               }}
@@ -58,6 +62,7 @@ const App = () => {
             <Route exact path='/list' component={OwnerQuestionsPage} />
             <Route exact path='/answer/:id' component={AnswerFormPage} />
             <Route exact path='/new' component={QuestionFormPage} />
+            <Route exact path='/profile' component={MyProfile} />
             <Redirect to='/' />
           </Switch>
           <Footer />
@@ -73,7 +78,7 @@ const App = () => {
               component={() => {
                 return (
                   <HomePage>
-                    <SignIn />
+                    <SignIn dispatch={dispatch} />
                   </HomePage>
                 );
               }}
@@ -102,13 +107,13 @@ function SignIn() {
   );
 }
 
-function SignOut() {
+function SignOut({ dispatch }) {
   return (
     auth.currentUser && (
       <button
         className='button'
         onClick={() => {
-          localStorage.removeItem('uid');
+          dispatch(logout());
           auth.signOut();
         }}>
         Log out
@@ -117,4 +122,4 @@ function SignOut() {
   );
 }
 
-export default App;
+export default connect()(App);
