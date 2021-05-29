@@ -20,7 +20,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Footer } from './components/Footer';
 import MyProfile from './pages/MyProfile';
 import { connect } from 'react-redux';
-import { login, logout } from './actions/authActions';
+import { login, logout, postUser } from './actions/authActions';
 
 firebase.initializeApp({
   apiKey: 'AIzaSyA_DPUHPTfxSPV5SUtiLTFecDl0hTbx7ew',
@@ -36,7 +36,9 @@ const auth = firebase.auth();
 
 const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
-  if(user){
+  console.log(user);
+  if (user) {
+    postUser(user.email, user.displayName, user.uid);
     dispatch(login(user.email, user.uid, user.displayName));
   }
 
