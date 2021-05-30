@@ -56,9 +56,9 @@ export async function updateUser({
     email,
     name,
     lastName,
-    alternativeEmail: emailVisible
-  }
-  const response = await fetch(`${URL_BASE}/update/user`, {
+    alternativeEmail: emailVisible,
+  };
+  await fetch(`${URL_BASE}/update/user`, {
     method: 'PUT',
     mode: 'cors',
     headers: {
@@ -66,5 +66,4 @@ export async function updateUser({
     },
     body: JSON.stringify(data),
   });
-  await response.text();
 }

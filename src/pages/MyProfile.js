@@ -23,12 +23,12 @@ const MyProfile = ({ dispatch, email, userId, profile }) => {
           id='name'
           defaultValue={profile.name}
           placeholder='Name'
-          {...register('name', { maxLength: 30 })}
+          {...register('name', { maxLength: 30, required: true })}
         />
         <input
           id='lastName'
           defaultValue={profile.lastName}
-          {...register('lastName')}
+          {...register('lastName', { required: true })}
         />
         <input
           id='email'
