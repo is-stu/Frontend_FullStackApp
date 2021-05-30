@@ -6,7 +6,17 @@ export const Footer = () => {
     <div className='footer-container'>
       <footer className='footer'>
         <p>© th3DarkGhost</p>
-        <a href='https://github.com/th3DarkGhost' target="_blank" rel="noopener noreferrer">
+        <a
+          href='https://github.com/th3DarkGhost'
+          target='_blank'
+          rel='noopener noreferrer'>
+          <GitHubIcon />
+        </a>
+        <p>© Daniel Jaramillo</p>
+        <a
+          href='https://github.com/dejaramillo'
+          target='_blank'
+          rel='noopener noreferrer'>
           <GitHubIcon />
         </a>
       </footer>

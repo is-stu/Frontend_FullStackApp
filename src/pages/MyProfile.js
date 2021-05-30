@@ -1,30 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
+import { getUser, updateUser } from '../actions/authActions';
 
-const MyProfile = ({ displayName, email, uid }) => {
-  const [name, setName] = useState(displayName);
+const MyProfile = ({ dispatch, email, userId, profile }) => {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => {
+    data.userId = userId;
+    console.log(data);
+    updateUser(data);
+  };
+
+  useEffect(() => {
+    dispatch(getUser(userId));
+  }, [dispatch, userId]);
+
   return (
     <section>
       <h1 className='title'>My Profile</h1>
-      <input
-        type='text'
-        placeholder='Nombre'
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-      <input type='text' placeholder='Apellido' />
-      <input
-        type='email'
-        placeholder='Correo Registro'
-        value={email}
-        readOnly
-      />
-      <input type='text' placeholder='Correo Visible' />
-      <button type='submit' className='button'>
-        Update Profile
-      </button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          id='name'
+          defaultValue={profile.name}
+          placeholder='Name'
+          {...register('name', { maxLength: 30 })}
+        />
+        <input
+          id='lastName'
+          defaultValue={profile.lastName}
+          {...register('lastName')}
+        />
+        <input
+          id='email'
+          type='email'
+          defaultValue={email}
+          readOnly
+          {...register('email')}
+        />
+        <input
+          id='emailVisible'
+          type='email'
+          placeholder='Visible Email'
+          defaultValue={profile.alternativeEmail}
+          {...register('emailVisible')}
+        />
+        <button type='submit' className='button'>
+          Update Profile
+        </button>
+      </form>
     </section>
   );
 };
@@ -32,7 +55,7 @@ const MyProfile = ({ displayName, email, uid }) => {
 const mapStateToProps = (state) => ({
   userId: state.auth.uid,
   email: state.auth.email,
-  displayName: state.auth.displayName,
+  profile: state.auth.profile,
 });
 
 export default connect(mapStateToProps)(MyProfile);

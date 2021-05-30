@@ -36,7 +36,6 @@ const auth = firebase.auth();
 
 const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
-  console.log(user);
   if (user) {
     postUser(user.email, user.displayName, user.uid);
     dispatch(login(user.email, user.uid, user.displayName));
